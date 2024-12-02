@@ -33,9 +33,20 @@
             z-index: -1; /* Send hidden screens to the back */
         }
 
-        h1, h2 {
-            font-size:5rem;
-            color: #2126a7;
+        h1, h2, h3 {
+            font-size: 3rem;
+            color: #ff6363;
+            opacity: 0; /* Start with opacity 0 for the fade-in effect */
+            transform: scale(0.5); /* Start with a smaller scale for the effect */
+            animation: fadeInScale 2s forwards;
+        }
+
+        h3 {
+            font-size: 3rem;
+            color: #007c04;
+            font-weight: bold;
+            animation: fadeInText 1s forwards;
+            opacity: 0; /* Initially hidden */
         }
 
         .buttons {
@@ -61,6 +72,51 @@
             color: white;
             position: relative;
         }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeInText {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .third-screen-text {
+            color: #ffffff;
+            text-align: center;
+            font-weight: bold;
+            font-size: 5rem;
+            opacity: 0;
+            animation: fadeInText 1s forwards;
+        }
+
+        .third-screen-text:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .third-screen-text:nth-child(2) {
+            animation-delay: 1s;
+        }
+
+        .third-screen-text:nth-child(3) {
+            animation-delay: 2s;
+        }
+
+        .third-screen-text:nth-child(4) {
+            animation-delay: 3s;
+        }
     </style>
 </head>
 <body>
@@ -71,8 +127,7 @@
     
     <!-- First Screen -->
     <div id="first-screen" class="screen">       
-        <h1>I am Sorryy!!!</h1>
-        <h1>Please Forgive Me?</h1>
+        <h1>I am Sorry. Forgive Me?</h1>
         <div class="buttons">
             <button id="yes-button">Yes</button>
             <button id="no-button">No</button>
@@ -93,9 +148,18 @@
         </div>
     </div>
 
+    <!-- Third Screen -->
+    <div id="third-screen" class="screen hidden">
+        <div class="third-screen-text">Yay! You said yes!</div>
+        <div class="third-screen-text">I love you too!!</div>
+        <div class="third-screen-text">Now you are officially My wife</div>
+        <div class="third-screen-text">"Shravani Tanmay Baravkar"</div>
+    </div>
+
     <script>
         const firstScreen = document.getElementById('first-screen');
         const secondScreen = document.getElementById('second-screen');
+        const thirdScreen = document.getElementById('third-screen');
         const firstVideo = document.getElementById('first-video');
         const secondVideo = document.getElementById('second-video');
         const yesButton = document.getElementById('yes-button');
@@ -114,6 +178,15 @@
                 firstVideo.style.display = 'none';
                 secondVideo.style.display = 'block';
             }, 2000); // 2-second delay before switching to second screen
+        });
+
+        // Transition from second to third screen after clicking "Yes" on second screen
+        yesButton2.addEventListener('click', () => {
+            secondScreen.classList.add('hidden');
+            setTimeout(() => {
+                secondScreen.style.zIndex = -1;
+                thirdScreen.classList.remove('hidden');
+            }, 2000); // 2-second delay before switching to third screen
         });
 
         // Create kiss emojis effect
@@ -164,12 +237,14 @@
             }, 2000);
         }
 
+        // Show kiss emojis on first screen's Yes button click
         yesButton.addEventListener('click', () => {
             for (let i = 0; i < 50; i++) { // Create 50 kiss emojis
                 setTimeout(createKissEffect, i * 100); // Stagger their appearance
             }
         });
 
+        // Show heart emojis on second screen's Yes button click
         yesButton2.addEventListener('click', () => {
             for (let i = 0; i < 50; i++) { // Create 50 heart emojis
                 setTimeout(createHeartEffect, i * 100); // Stagger their appearance
